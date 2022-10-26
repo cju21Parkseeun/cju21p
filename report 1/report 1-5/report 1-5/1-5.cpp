@@ -19,7 +19,7 @@ int main()
 
 	//x1 변수 생성
 	do {
-	retry1:r1 = (double)rand() / 32767;
+		r1 = (double)rand() / 32767;
 		r2 = (double)rand() / 32767;							// 0 ~ 1 사이의 난수 발생
 
 		v = sqrt(2 / exp(1.0)) * (2 * r2 - 1);
@@ -31,15 +31,13 @@ int main()
 			x1[i] = z;
 			i++;
 		}
-		else if ((k > (0.259 / r1) + 0.35) || (k > log(r1)))
-			goto retry1;
-	} 
-	while (i < 100);
+
+	}while (i < 100);
 	i = 0;
 
 	//x2 변수 생성
 	do {
-		retry2:r1 = (double)rand() / 32767;
+		r1 = (double)rand() / 32767;
 		r2 = (double)rand() / 32767;
 
 		v = sqrt(2 / exp(1.0)) * (2 * r2 - 1);
@@ -51,11 +49,9 @@ int main()
 			x2[i] = z;
 			i++;
 		}
-		else if ((k > (0.259 / r1) + 0.35) || (k > log(r1)))
-		goto retry2;
+		
+	}while (i < 100);
 
-	} 
-	while (i < 100);
 	for (i = 0; i < 100; i++)
 	{
 		// 명중했는지 판단
