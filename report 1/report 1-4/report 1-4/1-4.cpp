@@ -43,7 +43,7 @@ int main(void)
 		{
 			for (j = i; j < n; j++)
 			{
-				if (a[i] > a[j])
+				if (a[i] < a[j])
 				{
 					Num = a[i];
 					a[i] = a[j];
@@ -59,7 +59,7 @@ int main(void)
 		{
 			for (j = i; j < n; j++)
 			{
-				if (a[i] < a[j])
+				if (a[i] > a[j])
 				{
 					Num = a[i];
 					a[i] = a[j];

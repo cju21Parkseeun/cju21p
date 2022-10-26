@@ -3,63 +3,59 @@
 #include <time.h>
 #include <stdlib.h>
 
-void GenRandSeed()                                                  // 정수 생성 코드
+void GenRandSeed();
+void GenRandnum(double samples[100]);
+
+void GenRandSeed() // 정수 생성 코드
 {
-	srand((unsigned int)(time(NULL)));
-	return;
+    srand((unsigned int)(time(NULL)));
+    return;
+}
+
+// 변수 생성
+void GenRandnum(double samples[100]) {
+    double rn1, rn2, v, k, z;
+    int i = 0;
+    do {
+        rn1 = (double)rand() / 32767;
+        rn2 = (double)rand() / 32767; // 0 ~ 1 사이의 난수 발생
+
+        v = sqrt(2 / exp(1.0)) * (2 * rn2 - 1);
+        z = v / rn1;
+        k = ((double)1 / 4) * z * z;
+
+        if (k < 1 - rn1) {
+            samples[i] = z;
+            i++;
+        }
+        else if ((k > (0.259 / rn1) + 0.35) || (k > log(rn1)))
+            continue;
+
+    } while (i < 100);
 }
 
 int main()
 {
-	GenRandSeed();
 
-	int i = 0, count = 0;
-	double r1, r2, x1[100], x2[100], v, k, z;					// x1, x2 정규분포 변수 지정
-	printf("Accuracy rate calculation results: \n");
+    GenRandSeed();
 
-	//x1 변수 생성
-	do {
-		r1 = (double)rand() / 32767;
-		r2 = (double)rand() / 32767;							// 0 ~ 1 사이의 난수 발생
+    int i, count;
+    double  x1[100], x2[100]; // x1, x2 정규분포 변수 지정
+    printf("Accuracy rate calculation results: \n");
 
-		v = sqrt(2 / exp(1.0)) * (2 * r2 - 1);
-		z = v / r1;
-		k = ((double)1 / 4) * z * z;
+    //x1 변수 생성
+    GenRandnum(x1);
 
-		if (k < 1 - r1)
-		{
-			x1[i] = z;
-			i++;
-		}
+    //x2 변수 생성
+    GenRandnum(x2);
 
-	}while (i < 100);
-	i = 0;
+    for (count = 0, i = 0; i < 100; i++) {
+        // 명중했는지 판단
+        if ((0.8 * x1[i] >= -1.0 && 1.0 * x1[i] <= 1.0) && (1.2 * x2[i] >= -1.0 && 1.2 * x2[i] <= 1.0))
+            count++;
+    }
 
-	//x2 변수 생성
-	do {
-		r1 = (double)rand() / 32767;
-		r2 = (double)rand() / 32767;
+    printf("Success: %d/100 -> Probability of success: %.3lf == %.0f%%\n", count, ((double)count / 100), ((double)count / 100) * 100);
 
-		v = sqrt(2 / exp(1.0)) * (2 * r2 - 1);
-		z = v / r1;
-		k = ((double)1 / 4) * z * z;
-
-		if (k < 1 - r1)
-		{
-			x2[i] = z;
-			i++;
-		}
-		
-	}while (i < 100);
-
-	for (i = 0; i < 100; i++)
-	{
-		// 명중했는지 판단
-		if ((0.8 * x1[i] >= -1.0 && 1.0 * x1[i] <= 1.0) && (1.2 * x2[i] >= -1.0 && 1.2 * x2[i] <= 1.0))
-		count++;
-	}
-
-	printf("Success: %d/100 -> Probability of success: %.3lf == %.0f%%\n", count, ((double)count/100), ((double)count / 100) * 100);
-	return 0;
-
+    return 0;
 }
